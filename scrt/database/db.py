@@ -7,7 +7,7 @@ def get_connection():
     return sqlite3.connect(DB_NAME)
 
 
-def init_db():
+def create_tables():
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -15,20 +15,9 @@ def init_db():
         CREATE TABLE IF NOT EXISTS residents (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            debt REAL DEFAULT 0,
+            debt INTEGER DEFAULT 0,
             status TEXT DEFAULT 'normal',
             risk_score INTEGER DEFAULT 0
-        )
-    """)
-
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS incidents (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            resident_id INTEGER,
-            description TEXT,
-            severity INTEGER,
-            timestamp TEXT,
-            FOREIGN KEY (resident_id) REFERENCES residents(id)
         )
     """)
 
@@ -58,3 +47,15 @@ def get_all_residents():
 
     conn.close()
     return residents
+
+
+if __name__ == "__main__":
+    create_tables()
+    add_resident("Nazar")
+    add_resident("Artem")
+    add_resident("Illya")
+
+    print(get_all_residents())
+
+
+
