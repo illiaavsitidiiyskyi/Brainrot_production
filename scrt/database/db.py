@@ -59,3 +59,19 @@ if __name__ == "__main__":
 
 
 
+def get_resident_by_name(name):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM residents WHERE name = ?",
+        (name,)
+    )
+
+    result = cursor.fetchone()
+    conn.close()
+    return result
+
+
+
+print(get_resident_by_name("Illya"))
